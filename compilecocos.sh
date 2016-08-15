@@ -1,4 +1,19 @@
 #!/bin/bash
+##----------------------------------------------------------------------------##
+##       █      █                                                             ##
+##       ████████                                                             ##
+##     ██        ██     File    : compilecocos.sh                             ##
+##    ███  █  █  ███    Project : Cocos2d_Compile_Helpers                     ##
+##    █ █        █ █    Author  : N2OMatt                                     ##
+##     ████████████     Date    : Mon Aug 15 13:32:01 2016 UTC                ##
+##   █              █                                                         ##
+##  █     █    █     █  Copyright (c) 2016                                    ##
+##  █     █    █     █  AmazingCow - www.AmazingCow.com                       ##
+##   █              █                                                         ##
+##     ████████████     This File / Project is PROPRIETARY                    ##
+##                                                                            ##
+##                          Enjoy :)                                          ##
+##----------------------------------------------------------------------------##
 
 MODE=$1
 PLATFORM=$2;
