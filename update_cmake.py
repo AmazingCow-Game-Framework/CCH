@@ -1,12 +1,40 @@
 #!/usr/bin/python
+##----------------------------------------------------------------------------##
+##       █      █                                                             ##
+##       ████████                                                             ##
+##     ██        ██     File    : update_cmake.py                             ##
+##    ███  █  █  ███    Project : Cocos2d_Compile_Helpers                     ##
+##    █ █        █ █    Author  : N2OMatt                                     ##
+##     ████████████     Date    : Mon Aug 15 13:31:20 2016 UTC                ##
+##   █              █                                                         ##
+##  █     █    █     █  Copyright (c) 2016                                    ##
+##  █     █    █     █  AmazingCow - www.AmazingCow.com                       ##
+##   █              █                                                         ##
+##     ████████████     This File / Project is PROPRIETARY                    ##
+##                                                                            ##
+##                          Enjoy :)                                          ##
+##----------------------------------------------------------------------------##
 
+
+################################################################################
+## Imports                                                                    ##
+################################################################################
 import os;
 import sys;
+import getopt;
 
-kORIGINAL_FILE = "CMakeLists_Original.txt";
+
+################################################################################
+## Constants                                                                  ##
+################################################################################
+kORIGINAL_FILE = os.path.join(os.path.split(__file__)[0],"CMakeLists_Original.txt");
 kTARGET_FILE   = "CMakeLists.txt";
 
 
+
+################################################################################
+## Functions                                                                  ##
+################################################################################
 def add_definitions(target_file, lines):
     kDEFINITION_FORMAT = "    ADD_DEFINITIONS(-D{0})\n";
 
@@ -38,6 +66,7 @@ def add_include_directories(target_file, lines):
         line = line.replace("\n", "");
         write_line(target_file, kINCLUDE_FORMAT.format(line));
 
+
 def add_game_sources(target_file, lines):
     kSOURCE_FORMAT = "    {0}\n";
 
@@ -46,6 +75,9 @@ def add_game_sources(target_file, lines):
         write_line(target_file, kSOURCE_FORMAT.format(line));
 
 
+################################################################################
+## Helpers Functions                                                          ##
+################################################################################
 def write_line(target_file, line):
     target_file.write(line);
 
@@ -53,14 +85,52 @@ def canonize(path):
     return os.path.abspath(os.path.expanduser(path));
 
 
+################################################################################
+## Script Initialization                                                      ##
+################################################################################
 def main():
-    working_dir           = canonize(sys.argv[1]);
-    game_sources_def_path = canonize(sys.argv[2]);
-    include_dirs_def_path = canonize(sys.argv[3]);
-    android_defs_path     = canonize(sys.argv[4]);
-    linux_defs_path       = canonize(sys.argv[5]);
+    working_dir           = None;
+    game_sources_def_path = None;
+    include_dirs_def_path = None;
+    android_defs_path     = None;
+    linux_defs_path       = None;
 
-    original_file_path = canonize(os.path.join(working_dir, kORIGINAL_FILE));
+    ## COWTODO: Clean up the parsing stuff.
+    ## Parse the command line options.
+    options = getopt.gnu_getopt(
+        sys.argv[1:],
+        "",
+        ["working-dir=",
+         "game-sources=",
+         "include-dirs=",
+         "android-defs=",
+         "linux-defs="]
+    );
+
+    for key, value in options[0]:
+        key = key.lstrip("-");
+        if(key == "working-dir"):
+            working_dir = canonize(value);
+        elif(key == "game-sources"):
+            game_sources_def_path = canonize(value);
+        elif(key == "include-dirs"):
+            include_dirs_def_path = canonize(value);
+        elif(key == "android-defs"):
+            android_defs_path = canonize(value);
+        elif(key == "linux-defs"):
+            linux_defs_path = canonize(value);
+
+    if(working_dir           is None or \
+       game_sources_def_path is None or \
+       include_dirs_def_path is None or \
+       android_defs_path     is None or \
+       linux_defs_path       is None):
+        print "Missing parameters..."
+        exit(1);
+
+
+
+    original_file_path = kORIGINAL_FILE;
     target_file_path   = canonize(os.path.join(working_dir, kTARGET_FILE));
 
     print "Update the CMakeLists.txt";

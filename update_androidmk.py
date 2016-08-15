@@ -1,11 +1,39 @@
 #!/usr/bin/python
+##----------------------------------------------------------------------------##
+##       █      █                                                             ##
+##       ████████                                                             ##
+##     ██        ██     File    : update_androidmk.py                         ##
+##    ███  █  █  ███    Project : Cocos2d_Compile_Helpers                     ##
+##    █ █        █ █    Author  : N2OMatt                                     ##
+##     ████████████     Date    : Mon Aug 15 13:31:34 2016 UTC                ##
+##   █              █                                                         ##
+##  █     █    █     █  Copyright (c) 2016                                    ##
+##  █     █    █     █  AmazingCow - www.AmazingCow.com                       ##
+##   █              █                                                         ##
+##     ████████████     This File / Project is PROPRIETARY                    ##
+##                                                                            ##
+##                          Enjoy :)                                          ##
+##----------------------------------------------------------------------------##
+
+
+################################################################################
+## Imports                                                                   ##
+################################################################################
 import os;
 import sys;
+import getopt;
 
-kORIGINAL_FILE = "proj.android-studio/app/jni/Android_Original.mk";
+
+################################################################################
+## Constants                                                                  ##
+################################################################################
+kORIGINAL_FILE = os.path.join(os.path.split(__file__)[0],"Android_Original.mk");
 kTARGET_FILE   = "proj.android-studio/app/jni/Android.mk";
 
 
+################################################################################
+## Functions                                                                  ##
+################################################################################
 def add_include_directories(target_file, lines):
     kWRITE_FORMAT_WITH_ESCAPE    = "    $(LOCAL_PATH)/../../../{0} \\\n";
     kWRITE_FORMAT_WITH_NO_ESCAPE = "    $(LOCAL_PATH)/../../../{0} \n";
@@ -53,6 +81,10 @@ def write_lines(target_file, lines, espace_format, no_escape_format):
     write_line(target_file, "\n");
 
 
+
+################################################################################
+## Helpers                                                                    ##
+################################################################################
 def write_line(target_file, line):
     target_file.write(line);
 
@@ -60,12 +92,41 @@ def write_line(target_file, line):
 def canonize(path):
     return os.path.abspath(os.path.expanduser(path));
 
-def main():
-    working_dir           = canonize(sys.argv[1]);
-    game_sources_def_path = canonize(sys.argv[2]);
-    include_dirs_def_path = canonize(sys.argv[3]);
 
-    original_file_path = canonize(os.path.join(working_dir, kORIGINAL_FILE));
+################################################################################
+## Script Initialization                                                      ##
+################################################################################
+def main():
+    working_dir           = None;
+    game_sources_def_path = None;
+    include_dirs_def_path = None;
+
+    ## COWTODO: Clean up the parsing stuff.
+    ## Parse the command line options.
+    options = getopt.gnu_getopt(
+        sys.argv[1:],
+        "",
+        ["working-dir=",
+         "game-sources=",
+         "include-dirs="]
+    );
+
+    for key, value in options[0]:
+        key = key.lstrip("-");
+        if(key == "working-dir"):
+            working_dir = canonize(value);
+        elif(key == "game-sources"):
+            game_sources_def_path = canonize(value);
+        elif(key == "include-dirs"):
+            include_dirs_def_path = canonize(value);
+
+    if(working_dir           is None or \
+       game_sources_def_path is None or \
+       include_dirs_def_path is None):
+        print "Missing parameters..."
+        exit(1);
+
+    original_file_path = canonize(kORIGINAL_FILE);
     target_file_path   = canonize(os.path.join(working_dir, kTARGET_FILE));
 
     print "Update the Android.mk";
