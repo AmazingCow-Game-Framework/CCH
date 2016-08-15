@@ -7,9 +7,9 @@ $(call import-add-path,$(LOCAL_PATH)/../../../cocos2d/external)
 $(call import-add-path,$(LOCAL_PATH)/../../../cocos2d/cocos)
 $(call import-add-path,$(LOCAL_PATH)/../../../cocos2d/cocos/audio/include)
 
-LOCAL_MODULE := MyGame_shared
+LOCAL_MODULE := __UPDATE_CMAKE_GAME_NAME_LOCAL_MODULE__
 
-LOCAL_MODULE_FILENAME := libMyGame
+LOCAL_MODULE_FILENAME := __UPDATE_CMAKE_GAME_NAME_LOCAL_MODULE_FILENAME__
 
 LOCAL_SRC_FILES := hellocpp/main.cpp \
                   __UPDATE_CMAKE_GAME_SOURCES__

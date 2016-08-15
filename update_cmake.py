@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#coding=utf-8
 ##----------------------------------------------------------------------------##
 ##       █      █                                                             ##
 ##       ████████                                                             ##
@@ -75,6 +76,14 @@ def add_game_sources(target_file, lines):
         write_line(target_file, kSOURCE_FORMAT.format(line));
 
 
+def add_game_name(target_file, line, game_name):
+    line = line.replace(
+            "__UPDATE_CMAKE_GAME_NAME__",
+            game_name
+    );
+
+    write_line(target_file, line);
+
 ################################################################################
 ## Helpers Functions                                                          ##
 ################################################################################
@@ -89,6 +98,7 @@ def canonize(path):
 ## Script Initialization                                                      ##
 ################################################################################
 def main():
+    game_name             = None;
     working_dir           = None;
     game_sources_def_path = None;
     include_dirs_def_path = None;
@@ -100,7 +110,8 @@ def main():
     options = getopt.gnu_getopt(
         sys.argv[1:],
         "",
-        ["working-dir=",
+        ["game-name=",
+         "working-dir=",
          "game-sources=",
          "include-dirs=",
          "android-defs=",
@@ -109,7 +120,9 @@ def main():
 
     for key, value in options[0]:
         key = key.lstrip("-");
-        if(key == "working-dir"):
+        if(key == "game-name"):
+            game_name = value;
+        elif(key == "working-dir"):
             working_dir = canonize(value);
         elif(key == "game-sources"):
             game_sources_def_path = canonize(value);
@@ -120,7 +133,8 @@ def main():
         elif(key == "linux-defs"):
             linux_defs_path = canonize(value);
 
-    if(working_dir           is None or \
+    if(game_name             is None or \
+       working_dir           is None or \
        game_sources_def_path is None or \
        include_dirs_def_path is None or \
        android_defs_path     is None or \
@@ -172,6 +186,9 @@ def main():
 
         elif("__UPDATE_CMAKE_GAME_SOURCES__" in line):
             add_game_sources(target_file, game_sources_file_lines);
+
+        elif("__UPDATE_CMAKE_GAME_NAME__" in line):
+            add_game_name(target_file, line, game_name);
 
         else:
             write_line(target_file, line);

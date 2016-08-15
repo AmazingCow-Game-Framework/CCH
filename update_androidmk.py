@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#coding=utf-8
 ##----------------------------------------------------------------------------##
 ##       █      █                                                             ##
 ##       ████████                                                             ##
@@ -82,6 +83,25 @@ def write_lines(target_file, lines, espace_format, no_escape_format):
 
 
 
+
+def add_local_module_name(target_file, line, game_name):
+    line = line.replace(
+            "__UPDATE_CMAKE_GAME_NAME_LOCAL_MODULE__",
+            game_name + "_shared"
+    );
+
+    write_line(target_file, line);
+
+def add_local_module_filename(target_file, line, game_name):
+    line = line.replace(
+            "__UPDATE_CMAKE_GAME_NAME_LOCAL_MODULE_FILENAME__",
+            "lib" + game_name
+    );
+
+    write_line(target_file, line);
+
+
+
 ################################################################################
 ## Helpers                                                                    ##
 ################################################################################
@@ -97,6 +117,7 @@ def canonize(path):
 ## Script Initialization                                                      ##
 ################################################################################
 def main():
+    game_name             = None;
     working_dir           = None;
     game_sources_def_path = None;
     include_dirs_def_path = None;
@@ -106,21 +127,25 @@ def main():
     options = getopt.gnu_getopt(
         sys.argv[1:],
         "",
-        ["working-dir=",
+        ["game-name=",
+         "working-dir=",
          "game-sources=",
          "include-dirs="]
     );
 
     for key, value in options[0]:
         key = key.lstrip("-");
-        if(key == "working-dir"):
+        if(key == "game-name"):
+            game_name = value;
+        elif(key == "working-dir"):
             working_dir = canonize(value);
         elif(key == "game-sources"):
             game_sources_def_path = canonize(value);
         elif(key == "include-dirs"):
             include_dirs_def_path = canonize(value);
 
-    if(working_dir           is None or \
+    if(game_name             is None or \
+       working_dir           is None or \
        game_sources_def_path is None or \
        include_dirs_def_path is None):
         print "Missing parameters..."
@@ -157,6 +182,12 @@ def main():
 
         elif("__UPDATE_CMAKE_GAME_SOURCES__" in line):
             add_game_sources(target_file, game_sources_file_lines);
+
+        elif("__UPDATE_CMAKE_GAME_NAME_LOCAL_MODULE__" in line):
+            add_local_module_name(target_file, line, game_name);
+
+        elif("__UPDATE_CMAKE_GAME_NAME_LOCAL_MODULE_FILENAME__" in line):
+            add_local_module_filename(target_file, line, game_name);
 
         else:
             write_line(target_file, line);
