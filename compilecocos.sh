@@ -19,15 +19,35 @@ MODE=$1
 PLATFORM=$2;
 COCOS=/home/n2omatt/Documents/Packages/AndroidDev/cocos2d-x-3.12/tools/cocos2d-console/bin/cocos
 
+################################################################################
+## Android                                                                    ##
+################################################################################
 if [ "$PLATFORM" == "android" ]; then
-    $COCOS $MODE --android-studio \
-                --target android-19 \
-                --ap android-19 \
-                --ndk-mode debug \
-                --ndk-toolchain arm-linux-androideabi-4.9  \
-                --platform android \
-                --app-abi armeabi
+    ## Clean
+    if [ "$MODE" == "clean" ]; then
+        echo "Cleaning Android.";
+        ./clean_android.sh
+    ## Compile
+    else
+        $COCOS $MODE --android-studio                          \
+                     --target android-19                       \
+                     --ap android-19                           \
+                     --ndk-mode debug                          \
+                     --ndk-toolchain arm-linux-androideabi-4.9 \
+                     --platform android                        \
+                     --app-abi armeabi
+    fi;
+
+################################################################################
+## Linux                                                                      ##
+################################################################################
 else
-    echo "Compiling for linux";
-    $COCOS $MODE -p linux
+    ## Cleen
+    if [ "$MODE" == "clean" ]; then
+        echo "Cleaning Linux.";
+        ./clean_linux.sh
+    else
+        echo "Compiling for linux";
+        $COCOS $MODE -p linux
+    fi;
 fi;
