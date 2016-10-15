@@ -17,7 +17,7 @@
 
 MODE=$1
 PLATFORM=$2;
-COCOS=/home/n2omatt/Documents/Packages/AndroidDev/cocos2d-x-3.12/tools/cocos2d-console/bin/cocos
+COCOS=$COCOS_CONSOLE_ROOT/cocos
 
 ################################################################################
 ## Android                                                                    ##
