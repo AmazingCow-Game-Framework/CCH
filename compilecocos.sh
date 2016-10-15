@@ -17,7 +17,7 @@
 
 MODE=$1
 PLATFORM=$2;
-COCOS=$COCOS_CONSOLE_ROOT/cocos
+COCOS=cocos-console
 
 ################################################################################
 ## Android                                                                    ##
