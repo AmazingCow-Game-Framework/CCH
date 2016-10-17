@@ -15,9 +15,19 @@
 ##                          Enjoy :)                                          ##
 ##----------------------------------------------------------------------------##
 
+################################################################################
+## VARS                                                                       ##
+################################################################################
 MODE=$1
 PLATFORM=$2;
 COCOS=cocos-console
+
+## Gets the current script directory
+## Taken from:
+##      http://stackoverflow.com/questions/242538/unix-shell-script-find-out-which-directory-the-script-file-resides
+SCRIPT=$(readlink -f "$0")
+SCRIPTPATH=$(dirname "$SCRIPT")
+
 
 ################################################################################
 ## Android                                                                    ##
@@ -26,7 +36,7 @@ if [ "$PLATFORM" == "android" ]; then
     ## Clean
     if [ "$MODE" == "clean" ]; then
         echo "Cleaning Android.";
-        ./clean_android.sh
+        "$SCRIPTPATH"/clean_android.sh
     ## Compile
     else
         $COCOS $MODE --android-studio                          \
@@ -45,7 +55,7 @@ else
     ## Cleen
     if [ "$MODE" == "clean" ]; then
         echo "Cleaning Linux.";
-        ./clean_linux.sh
+        "$SCRIPTPATH"/clean_linux.sh
     else
         echo "Compiling for linux";
         $COCOS $MODE -p linux
