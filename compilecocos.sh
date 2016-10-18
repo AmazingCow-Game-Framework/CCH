@@ -40,12 +40,12 @@ if [ "$PLATFORM" == "android" ]; then
     ## Compile
     else
         $COCOS $MODE --android-studio                          \
-                     --target android-19                       \
-                     --ap android-19                           \
                      --ndk-mode debug                          \
-                     --ndk-toolchain arm-linux-androideabi-4.9 \
                      --platform android                        \
                      --app-abi armeabi
+                     # --target android-19                       \
+                     # --ap android-19                           \
+                     # --ndk-toolchain arm-linux-androideabi-4.9 \
     fi;
 
 ################################################################################
