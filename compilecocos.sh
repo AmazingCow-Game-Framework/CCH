@@ -15,18 +15,26 @@
 ##                          Enjoy :)                                          ##
 ##----------------------------------------------------------------------------##
 
-################################################################################
-## VARS                                                                       ##
-################################################################################
-MODE=$1
-PLATFORM=$2;
-COCOS=cocos-console
 
+################################################################################
+## "Constants"                                                                ##
+################################################################################
 ## Gets the current script directory
 ## Taken from:
 ##      http://stackoverflow.com/questions/242538/unix-shell-script-find-out-which-directory-the-script-file-resides
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
+
+COCOS=cocos-console
+
+
+################################################################################
+## VARS                                                                       ##
+################################################################################
+MODE=$1
+PLATFORM=$2;
+BUILD_MODE=$3
+ARCH=$4
 
 
 ################################################################################
@@ -37,12 +45,25 @@ if [ "$PLATFORM" == "android" ]; then
     if [ "$MODE" == "clean" ]; then
         echo "Cleaning Android.";
         "$SCRIPTPATH"/clean_android.sh
+
     ## Compile
     else
-        $COCOS $MODE --android-studio                          \
-                     --ndk-mode debug                          \
-                     --platform android                        \
-                     --app-abi armeabi
+        ## Mode was not specified.
+        if [ -z "$BUILD_MODE" ]; then
+            BUILD_MODE="debug";
+            echo "BUILD_MODE was not specified - Setting to $BUILD_MODE";
+        fi;
+
+        ## Architeture was not specified.
+        if [ -z "$ARCH" ]; then
+            ARCH="armeabi";
+            echo "ARCH was not specified - Setting to $ARCH";
+        fi;
+
+        $COCOS $MODE --android-studio       \
+                     --platform android     \
+                     --ndk-mode $BUILD_MODE \
+                     --app-abi  $ARCH
                      # --target android-19                       \
                      # --ap android-19                           \
                      # --ndk-toolchain arm-linux-androideabi-4.9 \
