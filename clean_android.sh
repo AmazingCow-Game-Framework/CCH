@@ -17,9 +17,16 @@
 
 
 ## Clean everything about Android build.
-rm -rf proj.android-studio/build
+## Assets
 rm -rf proj.android-studio/app/assets
+## Build
+rm -rf proj.android-studio/build
 rm -rf proj.android-studio/app/build
 rm -rf proj.android-studio/app/libs
 rm -rf proj.android-studio/app/obj
-
+## Res
+rm -rf proj.android-studio/app/res/mipmap-hdpi/
+rm -rf proj.android-studio/app/res/mipmap-mdpi/
+rm -rf proj.android-studio/app/res/mipmap-xhdpi/
+rm -rf proj.android-studio/app/res/mipmap-xxhdpi/
+rm -rf proj.android-studio/app/res/mipmap-xxxhdpi/
