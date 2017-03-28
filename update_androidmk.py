@@ -175,12 +175,13 @@ def main():
     ## Open the target file for writting..
     target_file = open(target_file_path, "w");
 
-
     for line in original_file_lines:
-        if("__UPDATE_CMAKE_INCLUDE_DIRECTORIES__" in line):
+        if("__UPDATE_CMAKE_INCLUDE_DIRECTORIES__" in line and \
+           len(include_dir_file_lines) != 0):
             add_include_directories(target_file, include_dir_file_lines);
 
-        elif("__UPDATE_CMAKE_GAME_SOURCES__" in line):
+        elif("__UPDATE_CMAKE_GAME_SOURCES__" in line and \
+           len(game_sources_file_lines) != 0):
             add_game_sources(target_file, game_sources_file_lines);
 
         elif("__UPDATE_CMAKE_GAME_NAME_LOCAL_MODULE__" in line):
