@@ -111,7 +111,6 @@ set(GAME_SRC
 
 set(GAME_HEADERS
     ## Cocos
-    Classes/AppDelegate.h
     ${PLATFORM_SPECIFIC_HEADERS}
 )
 
