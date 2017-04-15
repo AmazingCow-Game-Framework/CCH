@@ -92,19 +92,19 @@ def write_lines(target_file, lines, espace_format, no_escape_format):
 
     lines = clean_lines;
 
-    ## We don't want the last line to be escaped
-    ## so write all lines -1 with escape and
-    ## let the last unescaped.
-    for i in xrange(len(lines) -1):
-        line = lines[i].replace("\n", "");
-        write_line(target_file, espace_format.format(line));
+    if(len(lines) != 0):
+        ## We don't want the last line to be escaped
+        ## so write all lines -1 with escape and
+        ## let the last unescaped.
+        for i in xrange(len(lines) -1):
+            line = lines[i].replace("\n", "");
+            write_line(target_file, espace_format.format(line));
 
-    last_line = lines[-1];
-    write_line(target_file, no_escape_format.format(last_line));
+        last_line = lines[-1];
+        write_line(target_file, no_escape_format.format(last_line));
 
     ## Write a new line.
     write_line(target_file, "\n");
-
 
 
 
